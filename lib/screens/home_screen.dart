@@ -1,3 +1,4 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_generator/controllers/home_controller.dart';
@@ -30,12 +31,37 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            sizedBox(20),
+            sizedBox(100),
             TextField(
+              readOnly: true,
               showCursor: false,
               controller: _passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
+              decoration: InputDecoration(
+                suffixIcon: InkWell(
+                  onTap: () async {
+                    if (_passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please generate password to copy'),
+                        ),
+                      );
+                    } else {
+                      FlutterClipboard.copy(_passwordController.text).then(
+                        (value) {
+                          return ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Password copied to clipboard'),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: const Icon(
+                    Icons.copy_sharp,
+                  ),
+                ),
+                border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(5),
                   ),
@@ -63,7 +89,6 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () {
                         homeController.upper.value =
                             !homeController.upper.value;
-                        print(homeController.upper.value);
                       },
                       style: OutlinedButton.styleFrom(
                           side: const BorderSide(width: 1.0),
@@ -124,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: homeController.symbol.value
                               ? Colors.teal.shade300
                               : Colors.white),
-                      child: const Text('Lowercase'),
+                      child: const Text('Special Characters'),
                     ),
                   ),
                 ),
@@ -135,7 +160,11 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      int val = 1125 * homeController.slidervalue.value.toInt();
+
+                      _passwordController.text = val.toString();
+                    },
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1.0),
                         backgroundColor:
@@ -150,7 +179,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _passwordController.text = "";
+                    },
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1.0),
                         backgroundColor:
