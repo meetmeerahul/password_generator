@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,6 +35,8 @@ class HomeScreen extends StatelessWidget {
           children: [
             sizedBox(100),
             TextField(
+              style: const TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 2),
               readOnly: true,
               showCursor: false,
               controller: _passwordController,
@@ -161,9 +165,21 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      int val = 1125 * homeController.slidervalue.value.toInt();
+                      bool caps = homeController.upper.value;
+                      bool small = homeController.lower.value;
+                      bool num = homeController.numbers.value;
+                      bool special = homeController.symbol.value;
 
-                      _passwordController.text = val.toString();
+                      int len = homeController.slidervalue.value.toInt();
+
+                      String password = generatePassword(
+                          caps: caps,
+                          num: num,
+                          small: small,
+                          special: special,
+                          len: len);
+
+                      _passwordController.text = password;
                     },
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1.0),
@@ -211,5 +227,47 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String generatePassword(
+      {required bool caps,
+      required bool small,
+      required bool num,
+      required bool special,
+      required int len}) {
+    String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    String lower = "abcdfghijklmnopqrstuvwxyz";
+    String numbers = "1234567890";
+    String symbol = "!@#%^&*()";
+
+    String password = "";
+
+    String chars = "";
+
+    if (caps) {
+      chars += upper;
+    }
+
+    if (small) {
+      chars += lower;
+    }
+
+    if (num) {
+      chars += numbers;
+    }
+
+    if (special) {
+      chars += symbol;
+    }
+
+    List<String> charList = chars.split("").toList();
+
+    Random rand = Random();
+
+    for (int i = 0; i < len; i++) {
+      int index = rand.nextInt(charList.length);
+      password += charList[index];
+    }
+    return password;
   }
 }
