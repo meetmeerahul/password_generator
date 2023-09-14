@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:password_generator/models/dbfunctions/password_manage.dart';
+import 'package:password_generator/models/password_model.dart';
 
 class HomeController extends GetxController {
   final slidervalue = 10.0.obs;
@@ -8,6 +9,7 @@ class HomeController extends GetxController {
   final lower = false.obs;
   final numbers = false.obs;
   final symbol = false.obs;
+  RxList<PasswordModel> savedPasswords = <PasswordModel>[].obs;
 
   @override
   void onInit() {
