@@ -4,6 +4,9 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_generator/controllers/home_controller.dart';
+import 'package:password_generator/models/dbfunctions/password_manage.dart';
+import 'package:password_generator/models/password_model.dart';
+import 'package:password_generator/screens/saved_passwords.dart';
 import 'package:password_generator/screens/widgets/constants.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,10 +19,17 @@ class HomeScreen extends StatelessWidget {
     final homeController = Get.put(HomeController());
     return Scaffold(
       appBar: AppBar(
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.save_as_outlined),
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                Get.to(
+                  const SavedPasswords(),
+                );
+              },
+              child: const Icon(Icons.save_as_outlined),
+            ),
           ),
         ],
         backgroundColor: const Color.fromARGB(255, 177, 169, 193),
@@ -76,7 +86,7 @@ class HomeScreen extends StatelessWidget {
             Obx(
               () => Slider(
                   value: homeController.slidervalue.value.toDouble(),
-                  max: 20,
+                  max: 25,
                   divisions: 5,
                   label: homeController.slidervalue.value.toInt().toString(),
                   onChanged: (value) {
@@ -179,6 +189,20 @@ class HomeScreen extends StatelessWidget {
                           special: special,
                           len: len);
 
+                      if (homeController.slidervalue.value == 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Please Increase the length using slider'),
+                          ),
+                        );
+                      } else if (password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select atleast one type'),
+                          ),
+                        );
+                      }
                       _passwordController.text = password;
                     },
                     style: OutlinedButton.styleFrom(
@@ -210,7 +234,17 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_passwordController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please generate a password to save'),
+                          ),
+                        );
+                      } else {
+                        savePassword(context, _passwordController.text);
+                      }
+                    },
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1.0),
                         backgroundColor:
@@ -260,6 +294,10 @@ class HomeScreen extends StatelessWidget {
       chars += symbol;
     }
 
+    if (!caps && !small && !num && !special) {
+      len = 0;
+    }
+
     List<String> charList = chars.split("").toList();
 
     Random rand = Random();
@@ -269,5 +307,17 @@ class HomeScreen extends StatelessWidget {
       password += charList[index];
     }
     return password;
+  }
+
+  Future<void> savePassword(BuildContext context, String password) async {
+    final paswordData = PasswordModel(password: password);
+
+    addPassword(paswordData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Password saved'),
+      ),
+    );
   }
 }
