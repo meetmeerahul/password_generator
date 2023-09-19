@@ -9,6 +9,8 @@ import 'package:password_generator/models/password_model.dart';
 import 'package:password_generator/screens/saved_passwords.dart';
 import 'package:password_generator/screens/widgets/constants.dart';
 
+import 'widgets/type_buttons.dart';
+
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
@@ -28,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                   const SavedPasswords(),
                 );
               },
-              child: const Icon(Icons.save_as_outlined),
+              child: const Icon(Icons.save),
             ),
           ),
         ],
@@ -99,34 +101,22 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Obx(
-                    () => OutlinedButton(
-                      onPressed: () {
-                        homeController.upper.value =
-                            !homeController.upper.value;
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(width: 1.0),
-                          backgroundColor: homeController.upper.value
-                              ? Colors.teal.shade300
-                              : Colors.white),
-                      child: const Text('Uppercase'),
-                    ),
+                    () => PasswordType(
+                        homeController: homeController,
+                        onPressed: () => homeController.upper.value =
+                            !homeController.upper.value,
+                        text: const Text('Uppercase'),
+                        keyType: homeController.upper.value),
                   ),
                 ),
                 Expanded(
                   child: Obx(
-                    () => OutlinedButton(
-                      onPressed: () {
-                        homeController.lower.value =
-                            !homeController.lower.value;
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(width: 1.0),
-                          backgroundColor: homeController.lower.value
-                              ? Colors.teal.shade300
-                              : Colors.white),
-                      child: const Text('Lowercase'),
-                    ),
+                    () => PasswordType(
+                        homeController: homeController,
+                        onPressed: () => homeController.lower.value =
+                            !homeController.lower.value,
+                        text: const Text('Lowercase'),
+                        keyType: homeController.lower.value),
                   ),
                 ),
               ],
@@ -137,34 +127,22 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Obx(
-                    () => OutlinedButton(
-                      onPressed: () {
-                        homeController.numbers.value =
-                            !homeController.numbers.value;
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(width: 1.0),
-                          backgroundColor: homeController.numbers.value
-                              ? Colors.teal.shade300
-                              : Colors.white),
-                      child: const Text('Numbers'),
-                    ),
+                    () => PasswordType(
+                        homeController: homeController,
+                        onPressed: () => homeController.numbers.value =
+                            !homeController.numbers.value,
+                        text: const Text('Numbers'),
+                        keyType: homeController.numbers.value),
                   ),
                 ),
                 Expanded(
                   child: Obx(
-                    () => OutlinedButton(
-                      onPressed: () {
-                        homeController.symbol.value =
-                            !homeController.symbol.value;
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(width: 1.0),
-                          backgroundColor: homeController.symbol.value
-                              ? Colors.teal.shade300
-                              : Colors.white),
-                      child: const Text('Special Characters'),
-                    ),
+                    () => PasswordType(
+                        homeController: homeController,
+                        onPressed: () => homeController.symbol.value =
+                            !homeController.symbol.value,
+                        text: const Text('Special Characters'),
+                        keyType: homeController.symbol.value),
                   ),
                 ),
               ],

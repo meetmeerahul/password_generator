@@ -14,7 +14,8 @@ class SavedPasswords extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 177, 169, 193),
         title: const Text(
           "Saved Passwords",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple),
         ),
       ),
       body: Obx(() {
@@ -32,7 +33,7 @@ class SavedPasswords extends StatelessWidget {
                     title: Text(
                       password.password,
                       style: const TextStyle(
-                          letterSpacing: 2,
+                          letterSpacing: 1,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),

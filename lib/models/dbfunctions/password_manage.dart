@@ -15,6 +15,7 @@ addPassword(PasswordModel value) async {
 Future<void> getSavedPassowrds() async {
   final passwords = await Hive.openBox<PasswordModel>('password_db');
   final data = passwords.values.toList();
+
   homeController.savedPasswords.clear();
   for (var i in data) {
     homeController.savedPasswords.add(i);

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:password_generator/models/password_model.dart';
 import 'package:password_generator/screens/home_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:password_generator/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
