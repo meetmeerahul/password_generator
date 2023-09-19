@@ -241,14 +241,15 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  String generatePassword(
-      {required bool caps,
-      required bool small,
-      required bool num,
-      required bool special,
-      required int len}) {
+  String generatePassword({
+    required bool caps,
+    required bool small,
+    required bool num,
+    required bool special,
+    required int len,
+  }) {
     String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    String lower = "abcdfghijklmnopqrstuvwxyz";
+    String lower = "abcdefghijklmnopqrstuvwxyz";
     String numbers = "1234567890";
     String symbol = "!@#%^&*()";
 
@@ -258,18 +259,26 @@ class HomeScreen extends StatelessWidget {
 
     if (caps) {
       chars += upper;
+      password += upper[Random()
+          .nextInt(upper.length)]; // Ensure at least one uppercase letter
     }
 
     if (small) {
       chars += lower;
+      password += lower[Random()
+          .nextInt(lower.length)]; // Ensure at least one lowercase letter
     }
 
     if (num) {
       chars += numbers;
+      password += numbers[
+          Random().nextInt(numbers.length)]; // Ensure at least one number
     }
 
     if (special) {
       chars += symbol;
+      password +=
+          symbol[Random().nextInt(symbol.length)]; // Ensure at least one symbol
     }
 
     if (!caps && !small && !num && !special) {
@@ -280,10 +289,11 @@ class HomeScreen extends StatelessWidget {
 
     Random rand = Random();
 
-    for (int i = 0; i < len; i++) {
+    for (int i = password.length; i < len; i++) {
       int index = rand.nextInt(charList.length);
       password += charList[index];
     }
+
     return password;
   }
 
